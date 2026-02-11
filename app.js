@@ -19,3 +19,21 @@ li.addEventListener("click", () => {
 });
 
 li.querySelector("button").onclick = () => li.remove();
+
+document.querySelectorAll("#filters button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    filterTasks(btn.dataset.filter);
+  });
+});
+
+function filterTasks(type) {
+  document.querySelectorAll("#task-list li").forEach(li => {
+    if (type === "all") {
+      li.style.display = "flex";
+    } else if (type === "active") {
+      li.style.display = li.classList.contains("completed") ? "none" : "flex";
+    } else {
+      li.style.display = li.classList.contains("completed") ? "flex" : "none";
+    }
+  });
+}
