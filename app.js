@@ -4,22 +4,32 @@ const list = document.getElementById("task-list");
 
 form.addEventListener("submit", e => {
   e.preventDefault();
+  if (!input.value.trim()) return;
+
   addTask(input.value);
   input.value = "";
+  saveTasks();
 });
 
 function addTask(text, completed = false) {
   const li = document.createElement("li");
   li.innerHTML = `${text} <button>X</button>`;
-  list.appendChild(li);
+
   if (completed) li.classList.add("completed");
+
+  li.addEventListener("click", () => {
+    li.classList.toggle("completed");
+    saveTasks();
+  });
+
+  li.querySelector("button").addEventListener("click", e => {
+    e.stopPropagation();
+    li.remove();
+    saveTasks();
+  });
+
+  list.appendChild(li);
 }
-
-li.addEventListener("click", () => {
-  li.classList.toggle("done");
-});
-
-li.querySelector("button").onclick = () => li.remove();
 
 document.querySelectorAll("#filters button").forEach(btn => {
   btn.addEventListener("click", () => {
@@ -47,14 +57,26 @@ function saveTasks() {
       completed: li.classList.contains("completed")
     });
   });
+
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 function loadTasks() {
-  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-  tasks.forEach(t => {
-    addTask(t.text, t.completed);
-  });
+  try {
+    const raw = localStorage.getItem("tasks");
+    const tasks = raw ? JSON.parse(raw) : [];
+
+    if (!Array.isArray(tasks)) throw new Error();
+
+    tasks.forEach(t => {
+      if (t && typeof t.text === "string") {
+        addTask(t.text, t.completed);
+      }
+    });
+  } catch {
+    localStorage.setItem("tasks", "[]");
+  }
 }
+
 
 loadTasks();
