@@ -13,3 +13,7 @@ function addTask(text) {
   li.innerHTML = `${text} <button>X</button>`;
   list.appendChild(li);
 }
+
+li.addEventListener("click", () => {
+  li.classList.toggle("done");
+});
