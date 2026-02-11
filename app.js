@@ -13,7 +13,7 @@ form.addEventListener("submit", e => {
 
 function addTask(text, completed = false) {
   const li = document.createElement("li");
-  li.innerHTML = `${text} <button>X</button>`;
+  li.innerHTML = `${text} <button type="button">X</button>`;
 
   if (completed) li.classList.add("completed");
 
@@ -80,3 +80,9 @@ function loadTasks() {
 
 
 loadTasks();
+
+document
+  .getElementById("toggle-theme")
+  .addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+  });
