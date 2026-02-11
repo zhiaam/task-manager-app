@@ -17,3 +17,5 @@ function addTask(text) {
 li.addEventListener("click", () => {
   li.classList.toggle("done");
 });
+
+li.querySelector("button").onclick = () => li.remove();
