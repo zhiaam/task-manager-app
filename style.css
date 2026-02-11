@@ -19,3 +19,8 @@ li {
 button {
   cursor: pointer;
 }
+
+.dark {
+  background: #111;
+  color: white;
+}
