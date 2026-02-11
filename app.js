@@ -8,10 +8,11 @@ form.addEventListener("submit", e => {
   input.value = "";
 });
 
-function addTask(text) {
+function addTask(text, completed = false) {
   const li = document.createElement("li");
   li.innerHTML = `${text} <button>X</button>`;
   list.appendChild(li);
+  if (completed) li.classList.add("completed");
 }
 
 li.addEventListener("click", () => {
@@ -37,3 +38,23 @@ function filterTasks(type) {
     }
   });
 }
+
+function saveTasks() {
+  const tasks = [];
+  document.querySelectorAll("#task-list li").forEach(li => {
+    tasks.push({
+      text: li.firstChild.textContent.trim(),
+      completed: li.classList.contains("completed")
+    });
+  });
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function loadTasks() {
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  tasks.forEach(t => {
+    addTask(t.text, t.completed);
+  });
+}
+
+loadTasks();
